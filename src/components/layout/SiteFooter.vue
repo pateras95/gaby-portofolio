@@ -14,7 +14,7 @@ function toTop() {
         <a :href="c.href" :target="c.external ? '_blank' : null" rel="noopener" class="link-line">{{ c.label }}</a>
       </li>
     </ul>
-    <button class="site-footer__top link-line" @click="toTop">Back to top ↑</button>
+    <button class="tap site-footer__top" @click="toTop"><span class="link-line">Back to top ↑</span></button>
   </footer>
 </template>
 
@@ -24,5 +24,5 @@ function toTop() {
   padding-block: 2rem; border-top: 1px solid var(--line); font-size: 0.8rem;
 }
 .site-footer__links { display: flex; gap: 1.75rem; }
-.site-footer__top { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; min-height: 44px; }
+.site-footer__top { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
 </style>

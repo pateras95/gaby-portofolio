@@ -3,22 +3,32 @@
 import { site } from './site.config'
 import { projects as rawProjects } from './projects.config'
 import { home as rawHome } from './home.config'
+import { captions } from './captions.config'
 
 export { site }
 
 // ── Links ────────────────────────────────────────────────────────────────────
-// Every link gets: label ("Instagram Reel 3"), kind (platform) and embed (an iframe URL or null).
-// Embeddable: Instagram posts/reels (with caption), TikTok videos, YouTube videos, Issuu pages, LinkedIn posts, ipolizei.gr articles.
+// Every link gets: label ("Instagram Reel 3"), kind (platform), embed (an iframe URL or null) and the
+// post's caption (from captions.config.js) split into text + hashtags.
+// Embeddable: Instagram posts/reels, TikTok videos, YouTube videos, Issuu pages, LinkedIn posts, ipolizei.gr articles.
 const PLATFORMS = [
-  { kind: 'Instagram', label: (m) => (m[1] === 'reel' ? 'Instagram Reel' : 'Instagram Post'), re: /instagram\.com\/(p|reel)\/([\w-]+)/, embed: (m) => `https://www.instagram.com/${m[1]}/${m[2]}/embed/captioned/`, compact: (m) => `https://www.instagram.com/${m[1]}/${m[2]}/embed/` },
-  { kind: 'TikTok', label: () => 'TikTok video', re: /tiktok\.com\/@[^/]+\/video\/(\d+)/, embed: (m) => `https://www.tiktok.com/embed/v2/${m[1]}` },
-  { kind: 'YouTube', label: () => 'YouTube', re: /(?:youtu\.be\/|youtube\.com\/watch\?v=)([\w-]{11})/, embed: (m) => `https://www.youtube-nocookie.com/embed/${m[1]}?rel=0&playsinline=1` },
+  { kind: 'Instagram', label: (m) => (m[1] === 'reel' ? 'Instagram Reel' : 'Instagram Post'), re: /instagram\.com\/(p|reel)\/([\w-]+)/, code: (m) => m[2], embed: (m) => `https://www.instagram.com/${m[1]}/${m[2]}/embed/` },
+  { kind: 'TikTok', label: () => 'TikTok video', re: /tiktok\.com\/@[^/]+\/video\/(\d+)/, code: (m) => m[1], embed: (m) => `https://www.tiktok.com/player/v1/${m[1]}?description=1&music_info=1` },
+  { kind: 'YouTube', label: () => 'YouTube', re: /(?:youtu\.be\/|youtube\.com\/watch\?v=)([\w-]{11})/, code: (m) => m[1], embed: (m) => `https://www.youtube-nocookie.com/embed/${m[1]}?rel=0&playsinline=1` },
   { kind: 'Issuu', label: () => 'Magazine', re: /issuu\.com\/([^/]+)\/docs\/([^/?]+)(?:\/(\d+))?/, embed: (m) => `https://e.issuu.com/embed.html?u=${m[1]}&d=${m[2]}${m[3] ? `&pageNumber=${m[3]}` : ''}` },
   { kind: 'LinkedIn', label: () => 'LinkedIn post', re: /linkedin\.com\/posts\/[^?]*?(ugcPost|share|activity)-(\d+)/, embed: (m) => `https://www.linkedin.com/embed/feed/update/urn:li:${m[1]}:${m[2]}` },
   { kind: 'Web', label: () => 'Article', re: /ipolizei\.gr\//, embed: (m, url) => url },
 ]
 // Platforms we only link to (profiles, channels): just a name for the plain card.
 const NAMES = [[/instagram\.com/, 'Instagram'], [/tiktok\.com/, 'TikTok'], [/youtu/, 'YouTube'], [/linkedin\.com|lnkd\.in/, 'LinkedIn']]
+
+// "Text #tag #tag" → { text, tags }  (hashtags are shown separately from the text)
+const TAG = /#[\p{L}\p{N}_]+/gu
+export const splitCaption = (caption = '') => ({
+  tags: caption.match(TAG) ?? [],
+  text: caption.replace(TAG, '').replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim(),
+})
+const withCaption = (l, caption) => ({ ...l, caption, ...splitCaption(caption) })
 
 const toLink = (link, i) => {
   const l = typeof link === 'string' ? { url: link } : { ...link }
@@ -27,8 +37,8 @@ const toLink = (link, i) => {
   l.kind = platform?.kind ?? NAMES.find(([re]) => re.test(l.url))?.[1] ?? new URL(l.url).hostname.replace(/^www\./, '')
   l.label ??= `${platform ? platform.label(match) : l.kind} ${i + 1}`
   l.embed = l.embed === false ? null : l.embed || platform?.embed(match, l.url) || null // embed: false → card only
-  l.embedCompact = l.embed && (platform?.compact?.(match, l.url) ?? l.embed) // Instagram without the caption (shorter)
-  return l
+  l.code = platform?.code?.(match) ?? null // the id inside the URL — also the key in captions.config.js
+  return withCaption(l, l.caption ?? captions[l.code] ?? '')
 }
 
 // The overview text is shown as the first section, followed by the project's own sections.
@@ -70,16 +80,21 @@ export const workPath = (slug, part) => `/projects/${slug}${part ? `#${partId(pa
 
 const allLinks = (p) => [...p.sections, ...p.parts.flatMap((x) => x.sections)].flatMap((s) => s.links)
 
-// { project, ref, part?, label? } → the project's real link (embed, label, url …) + a path to its page.
-function resolveWork(item) {
-  const link = getProject(item.project) && allLinks(getProject(item.project)).find((l) => l.url.includes(item.ref))
+// { project, ref, part?, label?, caption?, note? … } → the project's real link (embed, label, url, caption …)
+// plus a path to its page. Anything else in the reference (category, …) is passed through.
+function resolveWork({ project, ref, part, ...extra }) {
+  const link = getProject(project) && allLinks(getProject(project)).find((l) => l.url.includes(ref))
   if (!link) {
-    console.warn(`[home.config] no link containing "${item.ref}" in project "${item.project}" — skipped`)
+    console.warn(`[home.config] no link containing "${ref}" in project "${project}" — skipped`)
     return null
   }
-  return { ...link, ...(item.label && { label: item.label }), to: workPath(item.project, item.part) }
+  const { note, caption, ...rest } = extra
+  return { ...withCaption({ ...link, ...rest }, caption ?? (link.caption || note || '')), to: workPath(project, part) }
 }
-const resolveAll = (items = []) => items.map(resolveWork).filter(Boolean)
+// { placeholder: 'CR Studio post' } → an empty slot, clearly marked, to be replaced in home.config.js
+const placeholder = ({ placeholder, project, part }) => ({ placeholder: true, kind: 'Placeholder', label: placeholder, url: '', embed: null, text: '', tags: [], to: project ? workPath(project, part) : '' })
+const resolveItem = (item) => (item.placeholder ? placeholder(item) : resolveWork(item))
+const resolveAll = (items = []) => items.map(resolveItem).filter(Boolean)
 const withTo = (o) => ({ ...o, to: workPath(o.project, o.part) })
 
 export const home = {
@@ -89,7 +104,7 @@ export const home = {
     featured: s.featured && { ...withTo(s.featured), video: resolveWork(s.featured.video), posts: resolveAll(s.featured.posts) },
     brands: s.brands?.map((b) => ({ ...withTo(b), examples: resolveAll(b.examples) })),
     boards: s.boards?.map((b) => ({ ...withTo(b), examples: resolveAll(b.examples) })),
-    voices: s.voices?.map((v) => ({ ...v, link: resolveWork(v.link) })),
-    items: s.items && resolveAll(s.items).map((link, i) => ({ ...link, category: s.items[i].category, note: s.items[i].note })),
+    voices: s.voices?.map((v) => ({ ...v, post: resolveWork(v.post), also: resolveAll(v.also) })),
+    items: s.items && resolveAll(s.items),
   })),
 }

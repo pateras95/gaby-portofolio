@@ -6,7 +6,7 @@ import { mdiArrowRight } from '@mdi/js'
 import { useParallax } from '@/composables/useParallax'
 import RevealOnScroll from '@/components/ui/RevealOnScroll.vue'
 import MagneticLink from '@/components/ui/MagneticLink.vue'
-import EmbedCard from '@/components/projects/EmbedCard.vue'
+import PostCard from '@/components/projects/PostCard.vue'
 import CapabilityHead from './CapabilityHead.vue'
 
 const props = defineProps({ section: { type: Object, required: true } })
@@ -33,7 +33,7 @@ useParallax(art, 0.05)
       </RevealOnScroll>
 
       <RevealOnScroll class="camp__video" :delay="200">
-        <EmbedCard :link="f.video" variant="compact" />
+        <PostCard :link="f.video" :caption="false" />
       </RevealOnScroll>
     </div>
 
@@ -51,7 +51,7 @@ useParallax(art, 0.05)
       </div>
 
       <ul class="camp__posts">
-        <RevealOnScroll v-for="(p, i) in f.posts" :key="p.url" tag="li" :delay="i * 140"><EmbedCard :link="p" variant="compact" /></RevealOnScroll>
+        <RevealOnScroll v-for="(p, i) in f.posts" :key="i" tag="li" :delay="i * 140"><PostCard :link="p" /></RevealOnScroll>
       </ul>
     </div>
   </section>
@@ -73,8 +73,7 @@ useParallax(art, 0.05)
 .camp__link:hover .camp__slogan span:last-child, .camp__link:focus-visible .camp__slogan span:last-child { text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 0.12em; }
 
 .camp__video { position: absolute; right: var(--gutter); bottom: 0; width: min(44%, 560px); }
-.camp__video .embed { width: 100%; }
-.camp__video .embed__tile { height: auto; aspect-ratio: 16 / 9; }
+.camp__video .post { width: 100%; }
 
 .camp__details { display: grid; gap: 3rem; padding-top: clamp(2rem, 4vw, 3rem); }
 .camp__meta { display: grid; gap: 1.1rem; }
@@ -85,16 +84,15 @@ useParallax(art, 0.05)
 .camp__tags li { padding: 0.4rem 0.8rem; border: 1px solid var(--line); border-radius: 999px; font-size: 0.74rem; font-weight: 500; }
 .camp__cta { justify-self: start; }
 
-.camp__posts { --embed-w: 330px; --embed-h: var(--embed-h-compact); display: flex; flex-wrap: wrap; gap: 28px; align-items: flex-start; }
+.camp__posts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 28px; align-items: start; }
+.camp__posts .post { width: 100%; }
 
 @media (min-width: 1000px) {
   .camp__details { grid-template-columns: 5fr 7fr; column-gap: 5vw; }
-  .camp__posts { justify-content: flex-end; }
 }
 @media (max-width: 899px) {
   .camp__stage { padding-bottom: 0; display: grid; gap: 1.25rem; }
   .camp__panel { width: 100%; aspect-ratio: 4 / 5; }
   .camp__video { position: static; width: 100%; }
-  .camp__video .embed { width: 100%; }
 }
 </style>

@@ -23,7 +23,7 @@ const primary = contactItems[0] // email if set, otherwise the first social link
         </RevealOnScroll>
         <RevealOnScroll v-if="primary" :delay="120"><span class="cta__text">{{ primary.text }}</span></RevealOnScroll>
         <RevealOnScroll :delay="200">
-          <RouterLink to="/contact" class="link-line cta__more">All contact details</RouterLink>
+          <RouterLink to="/contact" class="tap cta__more"><span class="link-line">All contact details</span></RouterLink>
         </RevealOnScroll>
       </div>
     </div>
@@ -38,6 +38,6 @@ const primary = contactItems[0] // email if set, otherwise the first social link
 .cta__row { display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem 2.5rem; margin-top: clamp(1rem, 3vw, 3rem); }
 .cta__btn { padding: 1.25rem 2.2rem; font-size: 0.85rem; }
 .cta__text { font-size: clamp(1.1rem, 2vw, 1.6rem); font-weight: 600; letter-spacing: -0.01em; word-break: break-word; }
-.cta__more { margin-left: auto; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; min-height: 44px; display: inline-flex; align-items: center; }
+.cta__more { margin-left: auto; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
 @media (max-width: 700px) { .cta__more { margin-left: 0; } }
 </style>

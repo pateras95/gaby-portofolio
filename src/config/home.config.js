@@ -17,7 +17,8 @@
 //  ORDER / REMOVING A SECTION: `sections` below is shown top to bottom — reorder or delete entries.
 //  `display` chooses the layout: campaign · brands · concepts · voices · video
 //
-//  Lines marked CHECK are texts copied from the live posts / the PDF — confirm they are yours.
+//  The text shown under every Instagram post comes from captions.config.js (keyed by the post's code).
+//  { placeholder: 'name' } in a list = an empty slot, clearly marked on the page, to fill in later.
 //  Colours (`theme`) are design choices — change freely.  `*word*` = serif italics.
 // =============================================================================
 
@@ -30,7 +31,6 @@ export const home = {
     mark: 'GK',
     headline: ['CREATIVE MARKETING', '& BRAND COMMUNICATIONS', '*Professional*'],
     statement: 'Blending strategy, storytelling and creative thinking to build meaningful connections between brands and people.',
-    discover: 'Explore the work',
     image: '/images/demo/25.jpg', // TEMPORARY demo photo (images: next phase)
     imagePosition: '50% 30%',
   },
@@ -99,6 +99,7 @@ export const home = {
           examples: [
             { project: 'creatures', ref: 'Dc8Kw3HFnXy' },
             { project: 'creatures', ref: 'DdgN4xMlGlT' },
+            { project: 'creatures', ref: 'DeMlC7AlulT' },
           ],
         },
         {
@@ -108,7 +109,12 @@ export const home = {
           project: 'creatures',
           part: '02',
           theme: { bg: '#e9dccb', fg: '#241a12', accent: '#8a3b1e' },
-          examples: [{ project: 'creatures', ref: 'cr_studio_production_space' }],
+          // The PDF only has CR Studio's Instagram profile (no posts yet) → two empty slots to fill in.
+          examples: [
+            { project: 'creatures', ref: 'cr_studio_production_space', label: 'CR Studio — Instagram profile' },
+            { placeholder: 'CR Studio post', project: 'creatures', part: '02' },
+            { placeholder: 'CR Studio post', project: 'creatures', part: '02' },
+          ],
         },
         {
           name: 'Μπαρ Μπεε Κιου',
@@ -120,6 +126,7 @@ export const home = {
           examples: [
             { project: 'creatures', ref: 'DfCOO_cCFLa' },
             { project: 'creatures', ref: 'DdtoYomCODD' },
+            { project: 'creatures', ref: 'DdYixmuCPGZ' },
           ],
         },
       ],
@@ -144,7 +151,7 @@ export const home = {
           title: 'Interactive Branded Content',
           project: 'i-poli-zei-free-press',
           part: '01',
-          theme: { bg: '#1b1712', fg: '#f4f0e9', accent: '#f2c230' },
+          theme: { bg: '#f2c230', fg: '#171717', accent: '#171717' },
           focus: ['Interactive advertising concepts', 'Quiz idea development', 'Creative audience engagement', 'Brand integration through entertainment'],
           beats: [
             { label: 'The challenge', text: 'Moving beyond conventional native articles and standard advertising formats, the objective was to create interactive experiences that invite readers to actively engage with a brand.' },
@@ -179,10 +186,12 @@ export const home = {
     },
 
     // ─────────────────────────────────────────────────────────────────────────
-    //  04 — COPYWRITING & BRAND VOICE  (typography-led, pick a voice)
-    //  style: shout | serif | headline | list   — how the samples are set in type
-    //  CHECK: samples are copied from the live posts / article titles / thumbnails.
-    //  Replace with your own favourite lines; `source` explains where each one comes from.
+    //  04 — COPYWRITING & BRAND VOICE  (pick a voice: the whole post, and its information pulled
+    //  apart into floating badges around it)
+    //    post     the embedded post (its text + hashtags come from captions.config.js)
+    //    samples  (optional) lines to set in type instead of the post's own text
+    //    also     (optional) more links shown as badges
+    //    style    how the text is set: shout | serif | headline | list
     // ─────────────────────────────────────────────────────────────────────────
     {
       id: 'voices',
@@ -198,18 +207,16 @@ export const home = {
           brand: 'Douleutaras',
           context: 'Social media captions for a student audience',
           style: 'shout',
-          samples: ['Ταυτίστηκε κανείς; 🤭'],
           source: 'Caption of the original Instagram post',
-          link: { project: 'douleutaras', ref: 'CiIOKkiJ9fP' },
+          post: { project: 'douleutaras', ref: 'CiIOKkiJ9fP' },
         },
         {
           tone: 'Creative & conversational',
           brand: 'CReatures',
           context: 'Social media captions for a creative agency',
           style: 'serif',
-          samples: ['Δεν είναι απλώς ένα ποτήρι 🥤 Είναι μία από εκείνες τις μικρές λεπτομέρειες, που κάνουν ένα brand να μένει στη μνήμη. Που αλλάζουν την εμπειρία.'],
           source: 'Caption of the original Instagram reel',
-          link: { project: 'creatures', ref: 'DbdKbA3iA4U' },
+          post: { project: 'creatures', ref: 'DbdKbA3iA4U' },
         },
         {
           tone: 'Editorial & thought-provoking',
@@ -218,7 +225,8 @@ export const home = {
           style: 'headline',
           samples: ['Τα dating apps πεθαίνουν, πάμε πίσω στην πραγματική ζωή', 'Ξέρω πόσα παγωτά έφαγες φέτος το καλοκαίρι!'],
           source: 'Published article titles',
-          link: { project: 'i-poli-zei-free-press', ref: 'ta-dating-apps' },
+          post: { project: 'i-poli-zei-free-press', ref: 'ta-dating-apps' },
+          also: [{ project: 'i-poli-zei-free-press', ref: 'xerw-posa-pagwta', label: 'The second article' }],
         },
         {
           tone: 'Clear & informative',
@@ -226,8 +234,9 @@ export const home = {
           context: 'YouTube titles and thumbnails',
           style: 'list',
           samples: ['CFMOTO 450MT Long Term Review', 'Ο εξοπλισμός μας για ένα ταξίδι 5000+ χλμ', 'Φάγαμε Τούμπα', 'Trip to Moldova · Part 2 — Romania'],
-          source: 'Text from the video thumbnails in the portfolio PDF',
-          link: { project: 'pubs-on-2-wheels', ref: 'pubs_on2wheels' },
+          source: 'Titles from the video thumbnails in the portfolio PDF',
+          post: { project: 'pubs-on-2-wheels', ref: 'DcJeHaANDLq' },
+          also: [{ project: 'pubs-on-2-wheels', ref: 'pubs_on2wheels', label: 'YouTube channel' }],
         },
       ],
     },
@@ -242,19 +251,14 @@ export const home = {
       eyebrow: '05 / STORIES THAT CONNECT',
       title: 'Storytelling & Video Content',
       description: 'Bringing ideas to life through visual narratives that capture attention and create meaningful connections.',
+      // the last slot of the grid — a way into the full projects (delete `more` to remove it)
+      more: { eyebrow: 'There is more', text: 'The full stories live in the projects', label: 'See all work', to: '/work' },
+      // note: shown only when a post has no text of its own (e.g. TikTok)
       items: [
-        {
-          project: 'creatures', ref: 'DdB9o2WD2zg', category: 'Agency storytelling', label: 'CReatures Agency — Instagram Reel',
-          note: 'Social media content that shows the people and the creative process behind the agency.',
-        },
-        {
-          project: 'creatures', part: '03 · B', ref: 'Dcx7AdqiYAV', category: 'Event communication', label: 'Piraeus Port Film Festival 2026 — Instagram Reel',
-          note: 'Social media and digital communication for the third edition of the festival.',
-        },
-        {
-          project: 'pubs-on-2-wheels', ref: 'Db6J0Dxt1vr', category: 'Short-form adaptation', label: 'Pubs On 2 Wheels — Instagram Reel',
-          note: 'Long-form motorcycle journeys adapted into short-form content to reach new audiences.',
-        },
+        { project: 'creatures', ref: 'DdB9o2WD2zg', category: 'Agency storytelling', label: 'CReatures Agency — Instagram Reel' },
+        { project: 'creatures', part: '03 · B', ref: 'Dcx7AdqiYAV', category: 'Event communication', label: 'Piraeus Port Film Festival 2026 — Instagram Reel' },
+        { project: 'pubs-on-2-wheels', ref: 'Db6J0Dxt1vr', category: 'Short-form adaptation', label: 'Pubs On 2 Wheels — Instagram Reel' },
+        { project: 'creatures', part: '04', ref: 'DfEzH6rRlVA', category: 'Brand personality', label: 'Μπαρ Μπεε Κιου — Instagram Reel' },
         {
           project: 'douleutaras', part: '03', ref: '7143199445738409222', category: 'Channel launch', label: 'Douleutaras — TikTok',
           note: "From research and strategy to the first videos of the brand's TikTok presence.",

@@ -118,7 +118,7 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKey))
           <p class="eyebrow">Get in touch</p>
           <ul class="menu__contact">
             <li v-for="c in contactItems" :key="c.label">
-              <a :href="c.href" :target="c.external ? '_blank' : null" rel="noopener" class="link-line">{{ c.label }}</a>
+              <a :href="c.href" :target="c.external ? '_blank' : null" rel="noopener" class="tap"><span class="link-line">{{ c.label }}</span></a>
             </li>
           </ul>
         </div>
@@ -201,7 +201,6 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKey))
 .menu__foot { display: flex; flex-wrap: wrap; gap: 1rem 3rem; align-items: end; font-size: 0.9rem; }
 .menu__foot .eyebrow { opacity: 0.6; margin-bottom: 0.35rem; }
 .menu__contact { display: flex; flex-wrap: wrap; gap: 0.25rem 1.5rem; }
-.menu__contact a { display: inline-flex; align-items: center; min-height: 44px; }
 .menu__theme {
   display: inline-flex; align-items: center; gap: 0.5rem; min-height: 44px;
   font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;

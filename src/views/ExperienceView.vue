@@ -32,7 +32,7 @@ const pad = (n) => String(n).padStart(2, '0')
             <ul v-if="job.bullets.length" class="job__list">
               <li v-for="b in job.bullets" :key="b">{{ b }}</li>
             </ul>
-            <RouterLink v-if="getProject(job.project)" :to="`/projects/${job.project}`" class="link-line job__link">View project →</RouterLink>
+            <RouterLink v-if="getProject(job.project)" :to="`/projects/${job.project}`" class="tap job__link"><span class="link-line">View project →</span></RouterLink>
           </div>
         </RevealOnScroll>
       </ol>
@@ -67,7 +67,7 @@ const pad = (n) => String(n).padStart(2, '0')
 .job__list { display: grid; gap: 0.5rem; color: var(--muted-text); }
 .job__list li { position: relative; padding-left: 1.2rem; }
 .job__list li::before { content: ''; position: absolute; left: 0; top: 0.75em; width: 0.5rem; height: 1px; background: currentColor; }
-.job__link { font-size: 0.74rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; min-height: 44px; display: inline-flex; align-items: center; }
+.job__link { font-size: 0.74rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
 @media (min-width: 900px) {
   .job { grid-template-columns: 1fr 2fr; column-gap: 6vw; }
   .job__years { position: sticky; top: calc(var(--header-h) + 1rem); align-self: start; }

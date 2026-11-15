@@ -5,7 +5,7 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { mdiChevronLeft, mdiChevronRight } from '@mdi/js'
 import { prefersReducedMotion } from '@/composables/useMotion'
-import EmbedCard from './EmbedCard.vue'
+import PostCard from './PostCard.vue'
 
 defineProps({ links: { type: Array, required: true }, label: { type: String, default: 'Work samples' } })
 
@@ -25,7 +25,7 @@ const schedule = () => { raf ||= requestAnimationFrame(update) }
 
 function go(dir) {
   const t = track.value
-  const step = (t.querySelector('.embed')?.offsetWidth ?? 420) + 28
+  const step = (t.querySelector('.post')?.offsetWidth ?? 400) + 28
   t.scrollBy({ left: dir * step * Math.max(1, Math.floor(t.clientWidth / step)), behavior: prefersReducedMotion() ? 'auto' : 'smooth' })
 }
 
@@ -46,7 +46,7 @@ onBeforeUnmount(() => {
       <button type="button" class="embeds__btn embeds__btn--next" aria-label="Next samples" :disabled="atEnd" @click="go(1)"><v-icon :icon="mdiChevronRight" /></button>
     </div>
     <ul ref="track" class="embeds__track" role="region" :aria-label="label" tabindex="0" @scroll.passive="schedule">
-      <li v-for="l in links" :key="l.url" class="embeds__item"><EmbedCard :link="l" /></li>
+      <li v-for="l in links" :key="l.url" class="embeds__item"><PostCard :link="l" /></li>
     </ul>
   </div>
 </template>

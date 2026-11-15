@@ -70,3 +70,6 @@ a:hover > .arrow, button:hover > .arrow, .btn:hover .arrow { transform: translat
 
 /* Cursor: only hide the native pointer when the custom one is running */
 html.has-cursor, html.has-cursor a, html.has-cursor button { cursor: none; }
+
+/* Touch target: the link/button is 44px tall, but the underline (.link-line) sits on the text inside it */
+.tap { display: inline-flex; align-items: center; min-height: 44px; }
