@@ -2,9 +2,10 @@
 import AnimatedText from '@/components/ui/AnimatedText.vue'
 import RevealOnScroll from '@/components/ui/RevealOnScroll.vue'
 import MagneticLink from '@/components/ui/MagneticLink.vue'
-import { site } from '@/data/site'
+import { mdiArrowRight } from '@mdi/js'
+import { site } from '@/config'
 
-const items = [...site.philosophy.ticker, ...site.philosophy.ticker]
+const items = [...site.about.coreSkills, ...site.about.coreSkills] // doubled for a seamless loop
 </script>
 
 <template>
@@ -16,12 +17,12 @@ const items = [...site.philosophy.ticker, ...site.philosophy.ticker]
     </div>
 
     <div class="philosophy__body container">
-      <AnimatedText id="philosophy-title" tag="h2" class="display display--l" :lines="site.philosophy.lines" />
+      <AnimatedText id="philosophy-title" tag="h2" class="display display--l" :lines="site.home.philosophy.lines" />
       <div class="philosophy__side">
-        <RevealOnScroll tag="p" class="lead">{{ site.philosophy.text }}</RevealOnScroll>
+        <RevealOnScroll tag="p" class="lead">{{ site.home.philosophy.text }}</RevealOnScroll>
         <RevealOnScroll :delay="120">
-          <MagneticLink to="/about" class="btn-wrap">
-            <span class="btn">About me <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" /></svg></span>
+          <MagneticLink to="/about">
+            <span class="btn">About me <v-icon class="arrow" :icon="mdiArrowRight" /></span>
           </MagneticLink>
         </RevealOnScroll>
       </div>

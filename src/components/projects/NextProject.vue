@@ -5,12 +5,12 @@ defineProps({ project: { type: Object, required: true } })
 <template>
   <RouterLink :to="`/projects/${project.slug}`" class="next" data-cursor="view" data-cursor-label="Next">
     <div class="next__bg" aria-hidden="true">
-      <img :src="project.heroImage" alt="" loading="lazy" decoding="async" :style="{ objectPosition: project.heroPosition }" />
+      <img :src="project.image" alt="" loading="lazy" decoding="async" :style="{ objectPosition: project.imagePosition }" />
     </div>
     <div class="next__content container">
       <p class="eyebrow">Next project</p>
       <h2 class="display display--xl next__title"><span class="sr-only">Next project: </span>{{ project.title }}</h2>
-      <p class="next__meta">{{ project.type }} — {{ project.year }}</p>
+      <p class="next__meta">{{ project.subtitle }}</p>
     </div>
   </RouterLink>
 </template>

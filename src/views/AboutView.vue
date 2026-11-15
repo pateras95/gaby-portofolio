@@ -1,22 +1,22 @@
 <script setup>
-import { site } from '@/data/site'
-import { projects } from '@/data/projects'
+import { mdiArrowRight } from '@mdi/js'
+import { site } from '@/config'
 import AnimatedText from '@/components/ui/AnimatedText.vue'
 import RevealOnScroll from '@/components/ui/RevealOnScroll.vue'
 import MagneticLink from '@/components/ui/MagneticLink.vue'
-import ProjectCard from '@/components/projects/ProjectCard.vue'
 import ContactCta from '@/components/home/ContactCta.vue'
 
-const highlights = projects.slice(0, 3)
+const a = site.about
 const pad = (n) => String(n).padStart(2, '0')
 </script>
 
 <template>
-  <div class="page about">
-    <header class="about__hero container page-top">
-      <AnimatedText tag="h1" class="display display--xl about__title" :lines="site.about.headline" immediate />
+  <div>
+    <header class="container about__hero page-top">
+      <p class="eyebrow about__eyebrow">{{ site.name }} — {{ site.title }}</p>
+      <AnimatedText tag="h1" class="display display--xl about__title" :lines="a.headline" immediate />
       <RevealOnScroll variant="mask" class="about__portrait">
-        <img v-if="site.about.portrait" :src="site.about.portrait" alt="Portrait" />
+        <img v-if="a.portrait" :src="a.portrait" :alt="site.name" />
         <div v-else class="portrait" role="img" aria-label="Portrait placeholder">
           <span class="portrait__initials">{{ site.initials }}</span>
           <span class="portrait__note">Portrait placeholder</span>
@@ -24,44 +24,64 @@ const pad = (n) => String(n).padStart(2, '0')
       </RevealOnScroll>
     </header>
 
-    <section class="container about__intro" aria-label="Introduction">
-      <RevealOnScroll tag="p" class="serif serif--lead about__lead">{{ site.about.intro }}</RevealOnScroll>
-      <div class="about__body">
-        <RevealOnScroll v-for="(t, i) in site.about.body" :key="i" tag="p" class="lead" :delay="i * 100">{{ t }}</RevealOnScroll>
-      </div>
+    <section class="container about__summary" aria-label="Summary">
+      <RevealOnScroll tag="p" class="serif serif--lead">{{ a.summary }}</RevealOnScroll>
     </section>
 
-    <section class="container section" aria-labelledby="philosophy-h">
-      <h2 id="philosophy-h" class="eyebrow about__label">Creative philosophy</h2>
-      <ol class="principles">
-        <RevealOnScroll v-for="(p, i) in site.about.principles" :key="p.title" tag="li" class="principle" :delay="i * 120">
-          <span class="principle__num">{{ pad(i + 1) }}</span>
-          <h3 class="display display--s">{{ p.title }}</h3>
-          <p>{{ p.text }}</p>
-        </RevealOnScroll>
-      </ol>
-    </section>
-
-    <section class="container about__skills" aria-labelledby="skills-h">
-      <h2 id="skills-h" class="eyebrow about__label">Disciplines</h2>
+    <section v-if="a.coreSkills.length" class="container section" aria-labelledby="skills-h">
+      <h2 id="skills-h" class="eyebrow about__label">Core skills</h2>
       <ul class="skills">
-        <RevealOnScroll v-for="(s, i) in site.about.disciplines" :key="s" tag="li" :delay="(i % 4) * 70">{{ s }}</RevealOnScroll>
+        <RevealOnScroll v-for="(s, i) in a.coreSkills" :key="s" tag="li" class="display display--s" :delay="(i % 2) * 80">
+          <span>{{ pad(i + 1) }}</span>{{ s }}
+        </RevealOnScroll>
       </ul>
     </section>
 
-    <section class="container section" aria-labelledby="highlights-h">
-      <div class="about__row">
-        <h2 id="highlights-h" class="eyebrow about__label">Selected work</h2>
-        <RouterLink to="/work" class="link-line eyebrow">See all work →</RouterLink>
-      </div>
-      <ul class="highlights">
-        <ProjectCard v-for="p in highlights" :key="p.id" :project="p" uniform />
-      </ul>
-      <RevealOnScroll class="about__exp">
-        <MagneticLink to="/experience" class="btn-wrap">
-          <span class="btn">View experience <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" /></svg></span>
-        </MagneticLink>
-      </RevealOnScroll>
+    <div class="container about__facts">
+      <section v-if="a.education.length" aria-labelledby="edu-h">
+        <h2 id="edu-h" class="eyebrow about__label">Education</h2>
+        <ul class="facts">
+          <RevealOnScroll v-for="e in a.education" :key="e.degree" tag="li">
+            <p class="facts__meta">{{ e.years }}</p>
+            <p class="facts__title">{{ e.degree }}</p>
+            <p class="facts__sub">{{ e.institution }}</p>
+          </RevealOnScroll>
+        </ul>
+      </section>
+
+      <section v-if="a.certificates.length" aria-labelledby="cert-h">
+        <h2 id="cert-h" class="eyebrow about__label">Certificates</h2>
+        <ul class="facts">
+          <RevealOnScroll v-for="c in a.certificates" :key="c.title" tag="li">
+            <p class="facts__title">{{ c.title }}</p>
+            <p class="facts__sub">{{ c.issuer }}</p>
+          </RevealOnScroll>
+        </ul>
+      </section>
+
+      <section v-if="a.publications.length" aria-labelledby="pub-h">
+        <h2 id="pub-h" class="eyebrow about__label">Publications</h2>
+        <ul class="facts">
+          <RevealOnScroll v-for="p in a.publications" :key="p.title" tag="li">
+            <p class="facts__meta">{{ p.kind }}<template v-if="p.date"> · {{ p.date }}</template></p>
+            <p class="facts__title">{{ p.title }}</p>
+            <p v-if="p.publisher" class="facts__sub">{{ p.publisher }}</p>
+          </RevealOnScroll>
+        </ul>
+      </section>
+
+      <section v-if="a.tools.length || a.languages.length" aria-labelledby="tools-h">
+        <h2 id="tools-h" class="eyebrow about__label">Tools &amp; languages</h2>
+        <ul v-if="a.tools.length" class="tags">
+          <li v-for="t in a.tools" :key="t">{{ t }}</li>
+        </ul>
+        <p v-if="a.languages.length" class="facts__sub about__langs">{{ a.languages.join(' · ') }}</p>
+      </section>
+    </div>
+
+    <section class="container about__links">
+      <MagneticLink to="/experience"><span class="btn">View experience <v-icon class="arrow" :icon="mdiArrowRight" /></span></MagneticLink>
+      <MagneticLink to="/work"><span class="btn">See work <v-icon class="arrow" :icon="mdiArrowRight" /></span></MagneticLink>
     </section>
 
     <ContactCta />
@@ -69,7 +89,7 @@ const pad = (n) => String(n).padStart(2, '0')
 </template>
 
 <style>
-.about__hero { display: grid; gap: 2rem; padding-bottom: clamp(3rem, 7vw, 6rem); }
+.about__hero { display: grid; gap: 1.25rem; padding-bottom: clamp(3rem, 7vw, 6rem); }
 .about__title { position: relative; z-index: 2; color: #fff; mix-blend-mode: difference; }
 .about__portrait { width: min(100%, 26rem); justify-self: end; aspect-ratio: 4 / 5; overflow: hidden; }
 .about__portrait img { width: 100%; height: 100%; object-fit: cover; }
@@ -80,32 +100,33 @@ const pad = (n) => String(n).padStart(2, '0')
 .portrait__initials { font-family: var(--font-serif); font-style: italic; font-size: clamp(5rem, 14vw, 9rem); line-height: 1; }
 .portrait__note { position: absolute; left: 1rem; bottom: 1rem; font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.8; }
 
-.about__intro { display: grid; gap: 2rem; }
-.about__lead { max-width: 30ch; }
-.about__body { display: grid; gap: 1.25rem; max-width: 40rem; }
+.about__summary .serif { max-width: 34ch; }
 .about__label { padding-bottom: 1rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--line); }
 
-.principles { display: grid; gap: 2.5rem; }
-.principle { display: grid; gap: 0.75rem; align-content: start; }
-.principle__num { font-family: var(--font-serif); font-style: italic; font-size: 1.6rem; color: var(--accent); }
-.principle p { color: var(--muted-text); max-width: 26rem; }
+.skills { display: grid; }
+.skills li { display: flex; align-items: baseline; gap: 1rem; padding-block: 1.1rem; border-bottom: 1px solid var(--line); }
+.skills li span { font-family: var(--font-serif); font-style: italic; font-size: 1rem; color: var(--accent); text-transform: none; min-width: 2rem; }
 
-.about__skills { padding-bottom: 0; }
-.skills { display: flex; flex-wrap: wrap; gap: 0.6rem; }
-.skills li { padding: 0.65rem 1.1rem; border: 1px solid var(--line); border-radius: 999px; font-size: 0.9rem; }
+.about__facts { display: grid; gap: 3.5rem 6vw; padding-block: var(--section-space) 0; }
+.facts { display: grid; gap: 1.5rem; }
+.facts li { display: grid; gap: 0.15rem; }
+.facts__meta { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted-text); }
+.facts__title { font-size: 1.1rem; font-weight: 600; line-height: 1.3; }
+.facts__sub { color: var(--muted-text); }
+.tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.tags li { padding: 0.5rem 1rem; border: 1px solid var(--line); border-radius: 999px; font-size: 0.9rem; }
+.about__langs { margin-top: 1.25rem; font-weight: 600; }
 
-.about__row { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
-.about__row .about__label { flex: 1; }
-.highlights { display: grid; gap: 2.5rem 1.5rem; }
-.about__exp { margin-top: clamp(2.5rem, 5vw, 4rem); }
+.about__links { display: flex; flex-wrap: wrap; gap: 1rem; padding-block: var(--section-space); }
 
+@media (min-width: 700px) {
+  .skills { grid-template-columns: 1fr 1fr; column-gap: 4vw; }
+  .about__facts { grid-template-columns: 1fr 1fr; }
+}
 @media (min-width: 900px) {
   .about__hero { grid-template-columns: 1fr 26rem; align-items: end; }
-  .about__hero .about__title { grid-column: 1 / -1; grid-row: 1; align-self: center; }
-  .about__hero .about__portrait { grid-row: 1; grid-column: 2; margin-top: 4rem; }
-  .about__intro { grid-template-columns: 1.1fr 1fr; column-gap: 6vw; align-items: start; }
-  .principles { grid-template-columns: repeat(3, 1fr); gap: 2rem; }
-  .highlights { grid-template-columns: repeat(3, 1fr); }
+  .about__hero .about__eyebrow { grid-column: 1 / -1; }
+  .about__hero .about__title { grid-column: 1 / -1; grid-row: 2; align-self: center; }
+  .about__hero .about__portrait { grid-row: 2; grid-column: 2; margin-top: 4rem; }
 }
-@media (min-width: 600px) and (max-width: 899px) { .highlights { grid-template-columns: repeat(2, 1fr); } }
 </style>

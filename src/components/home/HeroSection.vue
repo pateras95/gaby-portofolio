@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue'
 import AnimatedText from '@/components/ui/AnimatedText.vue'
 import { useParallax } from '@/composables/useParallax'
 import { prefersReducedMotion } from '@/composables/useMotion'
-import { site } from '@/data/site'
+import { site } from '@/config'
 
 const ready = ref(false)
 const par = ref(null)
@@ -23,14 +23,14 @@ function explore(e) {
   <section class="hero" :class="{ 'is-ready': ready }" aria-labelledby="hero-title">
     <div class="hero__media" aria-hidden="true">
       <div ref="par" class="hero__par">
-        <img :src="site.hero.image" alt="" fetchpriority="high" decoding="async" :style="{ objectPosition: site.hero.imagePosition }" />
+        <img :src="site.home.hero.image" alt="" fetchpriority="high" decoding="async" :style="{ objectPosition: site.home.hero.imagePosition }" />
       </div>
     </div>
 
-    <AnimatedText id="hero-title" tag="h1" class="hero__title display display--xl" :lines="site.hero.lines" immediate :delay="350" />
+    <AnimatedText id="hero-title" tag="h1" class="hero__title display display--xl" :lines="site.home.hero.lines" immediate :delay="350" />
 
     <div class="hero__foot">
-      <p class="hero__sub">{{ site.hero.sub }}</p>
+      <p class="hero__sub">{{ site.home.hero.sub }}</p>
       <a href="#work" class="hero__explore link-line" @click="explore">Explore the work ↓</a>
       <span class="scroll-hint" aria-hidden="true"><span class="scroll-hint__line" /></span>
     </div>

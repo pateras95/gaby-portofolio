@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
-import { projects } from '@/data/projects'
+import { projects } from '@/config'
 import { observe } from '@/composables/useInView'
 import { prefersReducedMotion } from '@/composables/useMotion'
 import AnimatedText from '@/components/ui/AnimatedText.vue'
@@ -51,7 +51,7 @@ function go(dir) {
 
     <FeaturedProjectPanel
       v-for="(p, i) in projects"
-      :key="p.id"
+      :key="p.slug"
       :ref="(c) => (panels[i] = c?.$el)"
       :project="p"
       :index="i"

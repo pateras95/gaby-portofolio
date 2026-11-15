@@ -22,6 +22,8 @@ const rows = computed(() =>
   ),
 )
 const plain = computed(() => rows.value.map((r) => r.map((p) => p.t).join('')).join(' '))
+// Greek text needs lang="el" so uppercase headlines drop the accents correctly.
+const lang = computed(() => (/[\u0370-\u03FF]/.test(plain.value) ? 'el' : null))
 
 const el = ref(null)
 const shown = ref(false)
@@ -48,7 +50,7 @@ onBeforeUnmount(() => stop())
 </script>
 
 <template>
-  <component :is="tag" ref="el" class="anim-text" :class="{ 'is-in': shown }" :style="{ '--delay': `${delay}ms` }">
+  <component :is="tag" ref="el" class="anim-text" :class="{ 'is-in': shown }" :lang="lang" :style="{ '--delay': `${delay}ms` }">
     <span class="sr-only">{{ plain }}</span>
     <span v-for="(row, i) in rows" :key="i" class="anim-text__line" aria-hidden="true">
       <span class="anim-text__inner" :style="{ '--i': i }"

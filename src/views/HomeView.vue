@@ -6,7 +6,7 @@ import ContactCta from '@/components/home/ContactCta.vue'
 </script>
 
 <template>
-  <div class="page">
+  <div>
     <HeroSection />
     <FeaturedProjects />
     <PhilosophySection />

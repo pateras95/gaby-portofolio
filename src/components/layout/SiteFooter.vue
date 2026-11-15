@@ -1,5 +1,5 @@
 <script setup>
-import { site } from '@/data/site'
+import { site, contactItems } from '@/config'
 
 function toTop() {
   window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })
@@ -8,12 +8,11 @@ function toTop() {
 
 <template>
   <footer class="site-footer container">
-    <p class="meta">© {{ site.year }} {{ site.name }} — demo content</p>
+    <p class="meta">© {{ new Date().getFullYear() }} {{ site.name }}</p>
     <ul class="site-footer__links">
-      <li v-for="s in site.socials" :key="s.label">
-        <a :href="s.href" target="_blank" rel="noopener" class="link-line">{{ s.label }}</a>
+      <li v-for="c in contactItems" :key="c.label">
+        <a :href="c.href" :target="c.external ? '_blank' : null" rel="noopener" class="link-line">{{ c.label }}</a>
       </li>
-      <li><a :href="`mailto:${site.email}`" class="link-line">Email</a></li>
     </ul>
     <button class="site-footer__top link-line" @click="toTop">Back to top ↑</button>
   </footer>

@@ -1,15 +1,22 @@
 <script setup>
 import { ref, watch, nextTick, onBeforeUnmount } from 'vue'
-import { primaryNav } from '@/data/navigation'
-import { projects } from '@/data/projects'
-import { site } from '@/data/site'
+import { mdiWeatherNight, mdiWeatherSunny } from '@mdi/js'
+import { projects, contactItems } from '@/config'
 import { useThemeToggle } from '@/composables/useThemeToggle'
+
+const primaryNav = [
+  { label: 'Home', to: '/' },
+  { label: 'Work', to: '/work' },
+  { label: 'About', to: '/about' },
+  { label: 'Experience', to: '/experience' },
+  { label: 'Contact', to: '/contact' },
+]
 
 const props = defineProps({ open: Boolean })
 const emit = defineEmits(['close'])
 
 const root = ref(null)
-const preview = ref(projects[0].id)
+const preview = ref(projects[0].slug)
 const { isDark, toggleTheme } = useThemeToggle()
 const pad = (n) => String(n).padStart(2, '0')
 
@@ -79,14 +86,14 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKey))
       <div class="menu__aside">
         <p class="eyebrow menu__eyebrow">Selected work</p>
         <ul class="menu__projects">
-          <li v-for="(p, i) in projects" :key="p.id">
+          <li v-for="(p, i) in projects" :key="p.slug">
             <RouterLink
               :to="`/projects/${p.slug}`"
               class="menu__project"
               :style="{ '--i': i }"
               @click="emit('close')"
-              @mouseenter="preview = p.id"
-              @focus="preview = p.id"
+              @mouseenter="preview = p.slug"
+              @focus="preview = p.slug"
             >
               <span class="menu__project-num">{{ pad(i + 1) }}</span>
               <span class="menu__project-title">{{ p.title }}</span>
@@ -96,28 +103,27 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKey))
         <div class="menu__preview" aria-hidden="true">
           <img
             v-for="p in projects"
-            :key="p.id"
-            :src="p.thumbnailImage"
+            :key="p.slug"
+            :src="p.image"
             alt=""
             loading="lazy"
             decoding="async"
-            :class="{ 'is-active': preview === p.id }"
+            :class="{ 'is-active': preview === p.slug }"
           />
         </div>
       </div>
 
       <div class="menu__foot">
-        <div>
+        <div v-if="contactItems.length">
           <p class="eyebrow">Get in touch</p>
-          <a :href="`mailto:${site.email}`" class="link-line">{{ site.email }}</a>
+          <ul class="menu__contact">
+            <li v-for="c in contactItems" :key="c.label">
+              <a :href="c.href" :target="c.external ? '_blank' : null" rel="noopener" class="link-line">{{ c.label }}</a>
+            </li>
+          </ul>
         </div>
-        <ul class="menu__socials">
-          <li v-for="s in site.socials" :key="s.label">
-            <a :href="s.href" target="_blank" rel="noopener" class="link-line">{{ s.label }}</a>
-          </li>
-        </ul>
         <button class="menu__theme" :aria-pressed="isDark" @click="toggleTheme">
-          <i class="mdi" :class="isDark ? 'mdi-weather-sunny' : 'mdi-weather-night'" aria-hidden="true" />
+          <v-icon :icon="isDark ? mdiWeatherSunny : mdiWeatherNight" size="18" />
           {{ isDark ? 'Light' : 'Dark' }} mode
         </button>
       </div>
@@ -194,7 +200,8 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKey))
 /* Footer row */
 .menu__foot { display: flex; flex-wrap: wrap; gap: 1rem 3rem; align-items: end; font-size: 0.9rem; }
 .menu__foot .eyebrow { opacity: 0.6; margin-bottom: 0.35rem; }
-.menu__socials { display: flex; gap: 1.5rem; }
+.menu__contact { display: flex; flex-wrap: wrap; gap: 0.25rem 1.5rem; }
+.menu__contact a { display: inline-flex; align-items: center; min-height: 44px; }
 .menu__theme {
   display: inline-flex; align-items: center; gap: 0.5rem; min-height: 44px;
   font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;

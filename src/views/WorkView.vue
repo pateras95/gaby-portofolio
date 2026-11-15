@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue'
-import { projects, categories } from '@/data/projects'
+import { projects, categories } from '@/config'
 import AnimatedText from '@/components/ui/AnimatedText.vue'
 import RevealOnScroll from '@/components/ui/RevealOnScroll.vue'
 import WorkFilters from '@/components/projects/WorkFilters.vue'
@@ -26,7 +26,7 @@ function beforeLeave(el) {
     <header class="work__head">
       <AnimatedText tag="h1" class="display display--xl" :lines="['The', '*archive.*']" immediate />
       <RevealOnScroll tag="p" class="lead work__intro">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. A complete archive of demo campaigns across brand, advertising, social and editorial work.
+        Social media strategy, campaigns, events and editorial work — filter by category.
       </RevealOnScroll>
     </header>
 
@@ -36,7 +36,7 @@ function beforeLeave(el) {
     </div>
 
     <TransitionGroup tag="ul" name="work" class="work-grid" @before-leave="beforeLeave">
-      <ProjectCard v-for="p in list" :key="p.id" :project="p" />
+      <ProjectCard v-for="p in list" :key="p.slug" :project="p" />
     </TransitionGroup>
   </div>
 </template>

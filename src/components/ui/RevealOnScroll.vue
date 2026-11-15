@@ -5,7 +5,7 @@ import { prefersReducedMotion } from '@/composables/useMotion'
 
 const props = defineProps({
   tag: { type: String, default: 'div' },
-  variant: { type: String, default: 'up' }, // up | fade | mask
+  variant: { type: String, default: 'up' }, // up | mask
   delay: { type: Number, default: 0 },
 })
 

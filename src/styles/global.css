@@ -65,7 +65,7 @@ h1, h2, h3, h4, p, figure, dl, dd { margin: 0; }
 .btn[disabled]::before { display: none; }
 .btn[disabled]:hover { color: inherit; border-color: currentColor; }
 
-.arrow { width: 1.1em; height: 1.1em; flex: none; transition: transform 0.45s var(--ease-out); }
+.arrow.v-icon { width: 1.1em; height: 1.1em; font-size: 1.1em; flex: none; transition: transform 0.45s var(--ease-out); }
 a:hover > .arrow, button:hover > .arrow, .btn:hover .arrow { transform: translateX(0.3em); }
 
 /* Cursor: only hide the native pointer when the custom one is running */

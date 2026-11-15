@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import AnimatedText from '@/components/ui/AnimatedText.vue'
 import RevealOnScroll from '@/components/ui/RevealOnScroll.vue'
 import MagneticLink from '@/components/ui/MagneticLink.vue'
+import { mdiArrowRight } from '@mdi/js'
 import { useParallax } from '@/composables/useParallax'
 
 const props = defineProps({
@@ -16,8 +17,6 @@ useParallax(par, 0.06)
 
 const pad = (n) => String(n).padStart(2, '0')
 const variant = computed(() => props.index % 4)
-// Portrait frames use the thumbnail image, wide frames use the hero image.
-const src = computed(() => (variant.value === 1 || variant.value === 3 ? props.project.thumbnailImage : props.project.heroImage))
 
 // Split the title into two balanced lines for the headline reveal.
 const titleLines = computed(() => {
@@ -44,24 +43,23 @@ const theme = computed(() => ({
     <RouterLink :to="`/projects/${project.slug}`" class="panel__media" data-cursor="view" tabindex="-1" aria-hidden="true">
       <RevealOnScroll variant="mask" class="panel__frame">
         <div ref="par" class="panel__par">
-          <img :src="src" :alt="`${project.title} — demo visual`" loading="lazy" decoding="async" :style="{ objectPosition: project.heroPosition }" />
+          <img :src="project.image" alt="" loading="lazy" decoding="async" :style="{ objectPosition: project.imagePosition }" />
         </div>
         <span class="panel__shade" />
-        <span class="panel__peek">{{ project.description }}</span>
+        <span class="panel__peek">{{ project.summary }}</span>
       </RevealOnScroll>
     </RouterLink>
 
     <div class="panel__info">
       <p class="panel__index"><span>{{ pad(index + 1) }}</span> / {{ pad(total) }}</p>
-      <p class="eyebrow panel__client">{{ project.client }} <span>— demo client</span></p>
       <AnimatedText tag="h3" class="display panel__title" :lines="titleLines" />
-      <p class="panel__type serif serif--lead">{{ project.type }}</p>
+      <p class="panel__type serif serif--lead">{{ project.subtitle }}</p>
       <ul class="panel__tags" aria-label="Categories">
         <li v-for="c in project.categories" :key="c">{{ c }}</li>
       </ul>
       <MagneticLink :to="`/projects/${project.slug}`" class="panel__cta" :strength="0.25">
         <span class="panel__cta-label">View project <span class="sr-only">{{ project.title }}</span></span>
-        <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" /></svg>
+        <v-icon class="arrow" :icon="mdiArrowRight" />
       </MagneticLink>
     </div>
   </article>
@@ -92,7 +90,6 @@ const theme = computed(() => ({
 .panel__info { position: relative; display: grid; gap: 1rem; align-content: end; }
 .panel__index { font-size: 0.8rem; letter-spacing: 0.12em; font-variant-numeric: tabular-nums; opacity: 0.8; }
 .panel__index span { font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 800; font-stretch: 82%; letter-spacing: -0.02em; margin-right: 0.15em; }
-.panel__client span { opacity: 0.6; font-weight: 500; }
 .panel__title { font-size: clamp(2.6rem, 6vw, 6.2rem); }
 .panel__type { opacity: 0.85; }
 .panel__tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }

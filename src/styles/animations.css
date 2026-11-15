@@ -6,9 +6,6 @@
 }
 .reveal--up.is-in { opacity: 1; transform: none; }
 
-.reveal--fade { opacity: 0; transition: opacity 1s var(--ease-out) var(--delay, 0ms); }
-.reveal--fade.is-in { opacity: 1; }
-
 /* Mask reveal: the root must have its own size (aspect-ratio / height). */
 .reveal--mask { position: relative; }
 .reveal__clip {

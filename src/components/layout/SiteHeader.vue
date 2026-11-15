@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { site } from '@/data/site'
+import { site } from '@/config'
 
 defineProps({ menuOpen: Boolean })
 defineEmits(['toggle'])

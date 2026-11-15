@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
-import { site } from '@/data/site'
+import { site } from '@/config'
 
 const routes = [
   { path: '/', name: 'home', component: HomeView, meta: { label: 'Home', title: `${site.name} — ${site.descriptor}` } },
