@@ -1,0 +1,47 @@
+.display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: 82%;
+  text-transform: uppercase;
+  letter-spacing: -0.025em;
+  line-height: 0.88;
+  margin: 0;
+}
+.display--xl { font-size: clamp(3.4rem, 12.5vw, 13.5rem); }
+.display--l  { font-size: clamp(2.8rem, 9vw, 9rem); }
+.display--m  { font-size: clamp(2.1rem, 5.6vw, 5.5rem); }
+.display--s  { font-size: clamp(1.6rem, 3.2vw, 3rem); line-height: 0.95; }
+
+/* Serif italic accent used inside headlines: *word* */
+.display em { line-height: 0; }
+.display em,
+.serif {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-stretch: 100%;
+  text-transform: none;
+  letter-spacing: -0.01em;
+}
+.serif--lead {
+  font-size: clamp(1.5rem, 2.8vw, 2.6rem);
+  line-height: 1.15;
+}
+
+.eyebrow {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin: 0;
+}
+.meta {
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: var(--muted-text);
+}
+.lead {
+  font-size: clamp(1.05rem, 1.5vw, 1.35rem);
+  line-height: 1.55;
+  max-width: 38em;
+}

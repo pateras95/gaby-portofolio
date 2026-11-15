@@ -1,0 +1,79 @@
+/* Scroll reveals (see RevealOnScroll.vue) */
+.reveal--up {
+  opacity: 0;
+  transform: translate3d(0, 40px, 0);
+  transition: opacity 0.9s var(--ease-out) var(--delay, 0ms), transform 1s var(--ease-out) var(--delay, 0ms);
+}
+.reveal--up.is-in { opacity: 1; transform: none; }
+
+.reveal--fade { opacity: 0; transition: opacity 1s var(--ease-out) var(--delay, 0ms); }
+.reveal--fade.is-in { opacity: 1; }
+
+/* Mask reveal: the root must have its own size (aspect-ratio / height). */
+.reveal--mask { position: relative; }
+.reveal__clip {
+  position: absolute; inset: 0;
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 1.2s var(--ease-io) var(--delay, 0ms);
+}
+.reveal--mask.is-in .reveal__clip { clip-path: inset(0); }
+.reveal--mask img {
+  transform: scale(1.2);
+  transition: transform 1.6s var(--ease-out) var(--delay, 0ms);
+}
+.reveal--mask.is-in img { transform: scale(1); }
+
+/* Line-by-line headline reveal (see AnimatedText.vue) */
+.anim-text__line {
+  display: block;
+  overflow: hidden;
+  padding: 0.12em 0;
+  margin: -0.12em 0;
+}
+.anim-text__inner {
+  display: inline-block;
+  transform: translate3d(0, 115%, 0);
+  transition: transform 1.1s var(--ease-out) calc(var(--delay, 0ms) + var(--i, 0) * 90ms);
+}
+.anim-text.is-in .anim-text__inner { transform: none; }
+
+/* Route transition */
+.page-enter-active { transition: opacity 0.6s var(--ease-out), transform 0.7s var(--ease-out); }
+.page-leave-active { transition: opacity 0.3s ease; }
+.page-enter-from { opacity: 0; transform: translate3d(0, 24px, 0); }
+.page-leave-to { opacity: 0; }
+
+/* Link with animated underline */
+.link-line {
+  position: relative;
+  display: inline-block;
+}
+.link-line::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: -0.15em;
+  height: 1px;
+  background: currentColor;
+  transform-origin: right;
+  transition: transform 0.45s var(--ease-out);
+}
+.link-line:hover::after,
+.link-line:focus-visible::after { transform: scaleX(0); transform-origin: left; }
+
+@keyframes marquee { to { transform: translate3d(-50%, 0, 0); } }
+@keyframes scroll-line {
+  0% { transform: scaleY(0); transform-origin: top; }
+  50% { transform: scaleY(1); transform-origin: top; }
+  51% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+  .marquee__track, .scroll-hint__line { animation: none !important; }
+}

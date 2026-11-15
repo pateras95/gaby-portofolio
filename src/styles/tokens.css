@@ -1,0 +1,41 @@
+/* ==========================================================================
+   Design tokens — change the palette / fonts / timings here.
+   ========================================================================== */
+:root {
+  /* Palette */
+  --bg: #f4f0e9;
+  --ink: #171717;
+  --muted: #8e8a84; /* decorative only */
+  --muted-text: #66625c; /* small text (AA on --bg) */
+  --white: #ffffff;
+  --accent: #e4482a;
+  --line: color-mix(in srgb, var(--ink) 16%, transparent);
+
+  /* Closing / inverted sections */
+  --invert-bg: var(--ink);
+  --invert-fg: var(--bg);
+
+  /* Type */
+  --font-display: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --font-body: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --font-serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+
+  /* Layout */
+  --gutter: clamp(1.25rem, 4vw, 3.5rem);
+  --section-space: clamp(5rem, 12vw, 11rem);
+  --header-h: 5rem;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-io: cubic-bezier(0.76, 0, 0.24, 1);
+  --t-fast: 250ms;
+  --t-med: 600ms;
+}
+
+:root[data-theme='dark'] {
+  --bg: #121212;
+  --ink: #f4f0e9;
+  --muted: #8e8a84;
+  --muted-text: #a8a39b;
+  --accent: #ff6a4a;
+}
