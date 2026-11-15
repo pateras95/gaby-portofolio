@@ -1,11 +1,16 @@
 // Single import point for all site content:  import { site, projects } from '@/config'
 // This file only prepares the config for the components — you normally never edit it.
-import { site } from './site.config'
-import { projects as rawProjects } from './projects.config'
-import { home as rawHome } from './home.config'
-import { captions } from './captions.config'
+import { site as siteFile } from './site.config'
+import { projects as projectsFile } from './projects.config'
+import { home as homeFile } from './home.config'
+import { captions as captionsFile } from './captions.config'
+import { previewData } from '@/admin/preview'
 
-export { site }
+// Inside the /admin preview frame the CMS draft replaces the files (null everywhere else → the files).
+export const site = previewData('site') ?? siteFile
+const rawProjects = previewData('projects') ?? projectsFile
+const rawHome = previewData('home') ?? homeFile
+const captions = previewData('captions') ?? captionsFile
 
 // ── Links ────────────────────────────────────────────────────────────────────
 // Every link gets: label ("Instagram Reel 3"), kind (platform), embed (an iframe URL or null) and the
@@ -80,10 +85,12 @@ export const workPath = (slug, part) => `/projects/${slug}${part ? `#${partId(pa
 
 const allLinks = (p) => [...p.sections, ...p.parts.flatMap((x) => x.sections)].flatMap((s) => s.links)
 
+// ref may also be a full URL.
 // { project, ref, part?, label?, caption?, note? … } → the project's real link (embed, label, url, caption …)
 // plus a path to its page. Anything else in the reference (category, …) is passed through.
 function resolveWork({ project, ref, part, ...extra }) {
-  const link = getProject(project) && allLinks(getProject(project)).find((l) => l.url.includes(ref))
+  // ref = a piece of a link already in the project — or a full post URL (https://…), which needs no entry there
+  const link = (getProject(project) && allLinks(getProject(project)).find((l) => l.url.includes(ref))) || (/^https?:\/\//.test(ref) ? toLink({ url: ref }, 0) : null)
   if (!link) {
     console.warn(`[home.config] no link containing "${ref}" in project "${project}" — skipped`)
     return null

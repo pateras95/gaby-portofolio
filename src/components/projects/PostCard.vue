@@ -128,13 +128,13 @@ onBeforeUnmount(() => {
 .post__ph-label { font-family: var(--font-display); font-weight: 800; font-stretch: 82%; font-size: 1.6rem; line-height: 1; text-transform: uppercase; }
 .post__ph-hint { font-size: 0.8rem; opacity: 0.7; }
 
-/* text + hashtags (fixed minimum height, so the footers line up across a row) */
-.post__body { display: grid; gap: 0.5rem; align-content: start; min-height: 9.75rem; }
+/* text + hashtags: a FIXED height (4 lines of text, 2 of hashtags, "read more"), so the footers line up across a row */
+.post__body { display: grid; grid-auto-rows: max-content; gap: 0.5rem; align-content: start; height: 12.5rem; } /* max-content rows: emoji make lines taller — they must never be squeezed */
 .post__text { font-size: 0.92rem; line-height: 1.5; white-space: pre-line; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 .post__tags { font-size: 0.8rem; line-height: 1.45; color: var(--post-tag, var(--accent)); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; word-break: break-word; }
 .post.is-open .post__text, .post.is-open .post__tags { -webkit-line-clamp: unset; display: block; }
-.post.is-open .post__body { min-height: 0; }
-.post__more { justify-self: start; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+.post.is-open .post__body { height: auto; } /* expanded on request */
+.post__more { justify-self: start; min-height: 32px; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
 
 /* footer: label and link on the same baseline, underline right under the text */
 .post__foot { display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem; }

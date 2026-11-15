@@ -30,7 +30,8 @@ watch(
 </script>
 
 <template>
-  <v-app>
+  <router-view v-if="route.meta.bare" />
+  <v-app v-else>
     <a class="skip-link" href="#main">Skip to content</a>
     <SiteHeader ref="header" :menu-open="menuOpen" @toggle="menuOpen ? closeMenu({ restoreFocus: true }) : (menuOpen = true)" />
     <FullscreenMenu :open="menuOpen" @close="closeMenu" />
