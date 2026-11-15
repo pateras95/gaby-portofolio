@@ -9,7 +9,7 @@ const routes = [
   { path: '/about', name: 'about', component: () => import('@/views/AboutView.vue'), meta: { label: 'About', title: 'About' } },
   { path: '/experience', name: 'experience', component: () => import('@/views/ExperienceView.vue'), meta: { label: 'Experience', title: 'Experience' } },
   { path: '/contact', name: 'contact', component: () => import('@/views/ContactView.vue'), meta: { label: 'Contact', title: 'Contact' } },
-  { path: '/admin', name: 'admin', component: () => import('@/admin/AdminView.vue'), meta: { label: 'Admin', title: 'Admin', bare: true } },
+  { path: '/admin', name: 'admin', component: () => import('@/admin/AdminPage.vue'), meta: { label: 'Admin', title: 'Admin', bare: true } },
   { path: '/:pathMatch(.*)*', name: 'not-found', component: () => import('@/views/NotFoundView.vue'), meta: { label: '404', title: 'Page not found' } },
 ]
 
