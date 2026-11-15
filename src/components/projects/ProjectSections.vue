@@ -1,7 +1,7 @@
 <script setup>
 // Renders a list of sections: { title, body: [...], links: [...] } (see config/projects.config.js).
-// Text sections use two columns; sections with links show the work inside phones.
-import PhoneRail from './PhoneRail.vue'
+// Text sections use two columns; sections with links show the work embedded in a row.
+import EmbedRail from './EmbedRail.vue'
 
 defineProps({ sections: { type: Array, required: true } })
 </script>
@@ -22,7 +22,7 @@ defineProps({ sections: { type: Array, required: true } })
         </template>
       </div>
     </section>
-    <PhoneRail v-if="s.links.length" :links="s.links" :label="s.title" />
+    <EmbedRail v-if="s.links.length" :links="s.links" :label="s.title" />
   </template>
 </template>
 

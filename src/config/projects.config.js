@@ -19,7 +19,8 @@
 //    links  "https://..." (label is generated: Instagram Reel 1, TikTok video 2 …)
 //           or { label: "My label", url: "https://..." }
 //           Instagram, TikTok, YouTube, Issuu, LinkedIn posts and article pages are shown
-//           embedded, playable inside a phone. Other links (profiles, channels) get a phone card.
+//           embedded directly on the page (Instagram with its caption). Other links (profiles,
+//           channels) get a plain card. Every sample also has an "Open on …" link.
 //           Add  embed: false  to a link to show only the card.
 //  Empty things are simply not shown.
 // =============================================================================

@@ -18,8 +18,17 @@ const router = createRouter({
   // Wait for the leaving page to fade out before jumping to the top, so the
   // old page never visibly "snaps" while it is still on screen.
   scrollBehavior(to, from, saved) {
+    const delay = from.name ? 320 : 0
+    // #part-01 … → scroll to that chapter once the (lazy) page has rendered it
+    if (to.hash && !saved) {
+      return new Promise((resolve) => {
+        let tries = 0
+        const find = () => (document.querySelector(to.hash) ? resolve({ el: to.hash, top: 90, behavior: 'smooth' }) : tries++ < 20 ? setTimeout(find, 100) : resolve({ top: 0 }))
+        setTimeout(find, delay + 200)
+      })
+    }
     const target = saved || { top: 0, left: 0 }
-    return new Promise((resolve) => setTimeout(() => resolve(target), from.name ? 320 : 0))
+    return new Promise((resolve) => setTimeout(() => resolve(target), delay))
   },
 })
 

@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
-import { getProject, getNextProject, site } from '@/config'
+import { getProject, getNextProject, partId, site } from '@/config'
 import { useParallax } from '@/composables/useParallax'
 import AnimatedText from '@/components/ui/AnimatedText.vue'
 import RevealOnScroll from '@/components/ui/RevealOnScroll.vue'
@@ -65,7 +65,7 @@ watchEffect(() => {
 
     <ProjectSections :sections="project.sections" />
 
-    <section v-for="part in project.parts" :key="part.title" class="p-part">
+    <section v-for="part in project.parts" :id="partId(part.label)" :key="part.title" class="p-part">
       <header class="container p-part__head">
         <p class="p-part__label">{{ part.label }}</p>
         <AnimatedText tag="h2" class="display display--m" :text="part.title" />

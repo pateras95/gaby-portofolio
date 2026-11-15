@@ -7,17 +7,18 @@
 //  ├─────────────────────────────────────────────────────────────────────────┤
 //  │  Name, job title, header tagline        →  1. IDENTITY                  │
 //  │  Email, phone, LinkedIn, TikTok…        →  2. CONTACT DETAILS           │
-//  │  Home page texts (hero, quote, closing) →  3. HOME PAGE                 │
-//  │  About page (summary, skills, studies,  →  4. ABOUT PAGE                │
+//  │  Home page (hero, 5 capabilities, CTA)  →  home.config.js               │
+//  │  About page (summary, skills, studies,  →  3. ABOUT PAGE                │
 //  │    certificates, publications, tools)                                   │
-//  │  Experience page + CV download          →  5. EXPERIENCE PAGE           │
-//  │  Contact page headline / availability   →  6. CONTACT PAGE              │
+//  │  Experience page + CV download          →  4. EXPERIENCE PAGE           │
+//  │  Contact page headline / availability   →  5. CONTACT PAGE              │
 //  │  Projects, case studies, embedded work  →  projects.config.js           │
 //  └─────────────────────────────────────────────────────────────────────────┘
 //
 //  Anything left empty ('' or []) is simply hidden — nothing breaks.
 //  `*word*` inside a headline is shown in serif italics.
 //  Lines marked TODO are placeholder copy that is not in the CV / portfolio PDF.
+//  The home page has its own file: home.config.js.
 // =============================================================================
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -45,24 +46,7 @@ const contact = {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-//  3. HOME PAGE  — TODO: placeholder copy, the home page will be redesigned
-// ─────────────────────────────────────────────────────────────────────────────
-const home = {
-  hero: {
-    lines: ['IDEAS THAT', '*connect.*', 'STORIES THAT', '*stay.*'],
-    sub: 'Marketing & brand communication. Strategy & storytelling.',
-    image: '/images/demo/25.jpg', // TEMPORARY demo photo
-    imagePosition: '50% 30%',
-  },
-  philosophy: {
-    lines: ['GOOD MARKETING', "ISN'T JUST *seen.*", "IT'S *felt.*"],
-    text: 'Skilled in understanding brand personalities, identifying audience characteristics and uncovering what makes a brand distinctive.',
-  },
-  cta: ["LET'S CREATE", '*something*', 'THAT MATTERS.'], // closing call-to-action (links to your first contact detail)
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-//  4. ABOUT PAGE  — from the CV
+//  3. ABOUT PAGE  — from the CV
 // ─────────────────────────────────────────────────────────────────────────────
 const about = {
   headline: ['CREATIVE THINKING.', 'STRATEGIC *instinct.*'],
@@ -71,7 +55,6 @@ const about = {
   summary:
     'Marketing & Communication graduate with a strategic and creative approach to branding. Skilled in understanding brand personalities, identifying audience characteristics and uncovering what makes a brand distinctive. Combines strategic thinking, creative concept development, visual storytelling and copywriting to translate brand identities into meaningful, engaging and audience-relevant communication.',
 
-  // Also used as the moving ticker on the Home page.
   coreSkills: [
     'Strategic Thinking',
     'Brand Strategy & Positioning',
@@ -108,7 +91,7 @@ const about = {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-//  5. EXPERIENCE PAGE  — from the CV
+//  4. EXPERIENCE PAGE  — from the CV
 //  Each entry: company, role, period, note (e.g. "Volunteer role"), bullets, project.
 //  `project` is the slug of a project in projects.config.js (adds a "View project" link).
 // ─────────────────────────────────────────────────────────────────────────────
@@ -174,11 +157,11 @@ const experience = {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-//  6. CONTACT PAGE  — TODO: placeholder copy
+//  5. CONTACT PAGE  — TODO: placeholder copy
 // ─────────────────────────────────────────────────────────────────────────────
 const contactPage = {
   headline: ['THE NEXT GREAT', '*story*', 'STARTS HERE.'],
   availability: 'Open to new opportunities with creative agencies, advertising agencies, branding studios and marketing teams.',
 }
 
-export const site = { ...identity, ...contact, home, about, experience, contactPage }
+export const site = { ...identity, ...contact, about, experience, contactPage }
